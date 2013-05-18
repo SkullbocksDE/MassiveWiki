@@ -1,9 +1,16 @@
 <?php
 /**
- * @brief	The extension FooterBar will add a fixed customizable bar at the bottom of each page.
+ * @brief		The extension 'FooterBar' will add a customizable bar at the bottom of each mediawiki page.
+ * @details		The extension 'FooterBar' will add a customizable bar at the bottom of each mediawiki page.
+ *				You can customize it via the MediaWiki:Common.css without touching the css-file.
+ *				There are also some variables, which can be set in the LocalSettings.php.
+ *				Read the README.md for more details.
  *
- * @author	Mike Knappe
- * @version	0.1
+ * @ingroup 	Extensions
+ * @author		Mike Knappe
+ * @version		0.1
+ * @copyright	© 2013 Mike Knappe
+ * @license GNU General Public Licence 2.0 or later
  *
  * @bug (fixed): Extension was called multiple times by the hook 'SkinAfterContent', 'ParseAfterTidy' and 'ParseBeforeTidy',
  *               where as 'AfterFinalPageOutput' has done bullshit at the end of the page. Now using 'OutputPageParserOutput'.
@@ -12,15 +19,18 @@
  * @bug (fixed): It wasn't possible to use i18. Now included.
  * @bug (fixed): It wasn't possible to hide the bar. Javascript included.
  * @bug (fixed): It wasn't possible to hide the bar via value. New value added, to allow/deny hiding the bar.
+ * @bug (fixed): It wasn't possible to use i18 for some text. Now all output is in i18.
+ * @bug (fixed): There was no explanation of the usage of the global array. Readme is now avaible.
  *
- * @todo Explain the global array usage.
  * @todo Add class/name/title tag to the links.
  * @todo Test the FooterBar on other browsers.
  * @todo Include JS via file, currently it's an inline script.
  * @todo Declare an option, where the current status of the bar is saved in during a session.
  * @todo Implement to add multiple links as a hove menu.
+ * @todo Implement a function to fetch a certain page instead of using the global array (like the mediawiki navigation).
+ * @todo Use the class name of the FooterBar to switch between hide/show (for JS).
  */
- 
+
 /**
  * @brief The FooterBar class
  */
@@ -35,14 +45,7 @@ class FooterBar{
 		if( !defined('MEDIAWIKI') ){ 
 			echo "To install the 'FooterBar' extension, put the following line in LocalSettings.php:";
 			echo "<br><dl><dd>require_once( '\$IP/extensions/FooterBar/FooterBar.php' );</dd></dl>";
-			echo "To append links the FooterBar, use the following code in LocalSettings.php:";
-			echo "<dl><dd>\$footerBarArray[]= array('namespace'=>'Category','name'=>'Help','target'=>'');</dd></dl>";
-			echo "To customize a link for a special page you can use as 'target' the value 'self', which appends '/CurrentPageName' to the url:";
-			echo "<dl><dd>\$footerBarArray[]= array('namespace'=>'Special','name'=>'WhatLinksHere','target'=>'self');</dd></dl>";
-			echo "To declare an own 'target', write what you want to append.";
-			echo "<dl><dd>\$footerBarArray[]= array('namespace'=>'User_blog','name'=>'TestUser','target'=>'/OldShip');</dd></dl>";
-			echo "Turn off the hide-function via:";
-			echo "<dl><dd>\$footerBarHideable = false;</dd></dl>";
+			echo "For more information read the <a href='./README.md'>README</a> :)";
 			exit( 1 );
 		}
 	}
@@ -119,9 +122,9 @@ class FooterBar{
 		$bottombar .= "</div>";
 		if($footerBarHideable==true){
 			//Currently a work-a-round for the javascript thingy
-			$barscript = "<script type='text/javascript'>function hideShowBar(){if(document.getElementById(\"footerBarContent\").style.display==\"block\"){document.getElementById(\"footerBarArrow\").innerHTML = \"&laquo;\";document.getElementById(\"footerBarContent\").style.display=\"none\";document.getElementById(\"footerBar\").style.width=\"20px\";}else{document.getElementById(\"footerBarArrow\").innerHTML = \"&raquo;\";document.getElementById(\"footerBarContent\").style.display=\"block\";document.getElementById(\"footerBar\").style.width=\"98%\";}}</script>";
+			$barscript = "<script type='text/javascript'>function hideShowBar(){if(document.getElementById(\"footerBarContent\").style.display==\"block\"){document.getElementById(\"footerBarArrow\").innerHTML = \"".wfMessage( 'footerbar-arrow-open' )->inContentLanguage()->plain()."\";document.getElementById(\"footerBarContent\").style.display=\"none\";document.getElementById(\"footerBar\").style.width=\"20px\";}else{document.getElementById(\"footerBarArrow\").innerHTML = \"".wfMessage( 'footerbar-arrow-close' )->inContentLanguage()->plain()."\";document.getElementById(\"footerBarContent\").style.display=\"block\";document.getElementById(\"footerBar\").style.width=\"98%\";}}</script>";
 			$wgOut->addHeadItem('footerBar', $barscript);
-			$bottombar .= "<div class='footerBarArrow' id='footerBarArrow' onclick='hideShowBar();'>&raquo;</div>";
+			$bottombar .= "<div class='footerBarArrow' id='footerBarArrow' onclick='hideShowBar();'>".wfMessage( 'footerbar-arrow-close' )->inContentLanguage()->plain()."</div>";
 		}
 		$bottombar .= "</div>";
 		
@@ -139,4 +142,3 @@ $footerBarArray = array(array('namespace'=>'Special','name'=>'WhatLinksHere','ta
 
 //Register the variables, resources, etc.
 FooterBar::initFooterBar();
-

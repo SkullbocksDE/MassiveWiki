@@ -1,3 +1,4 @@
+/* The outer div-container of the FooterBar. */
 .footerBar{
 	position:fixed;
 	width:98%;
@@ -14,6 +15,8 @@
 	border-bottom:0px;
 }
 
+/* The inner div-container of the FooterBar */
+/* which contains all the added links. */
 .footerBarContent{
 	text-align:center;
 	width:90%;
@@ -21,6 +24,7 @@
 	display:block;
 }
 
+/* The div-container to hide/show the FooterBar. */
 .footerBarArrow{
 	position:absolute;
 	right:0px;
