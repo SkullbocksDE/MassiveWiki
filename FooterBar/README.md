@@ -2,15 +2,18 @@ MediaWiki :: Extension :: FooterBar
 ===========
 
 This code is an extension for MediaWiki ( > v.1.2).
+
 FooterBar adds a bar at the bottom of each page.
+
 You can add links via a global array to the FooterBar.
+
 It's possible to do some personalization (read further).
 
 * Author: Mike Knappe
 * Version: 0.1
 * Copyright: © 2013 Mike Knappe
 * License: GNU General Public Licence 2.0 or later
-	
+
 Install Notes
 ===========
 
@@ -38,24 +41,23 @@ To redesign the bar via the MediaWiki:Common.css use this classes:
 * .footerBarContent
 * .footerBarArrow
 	
-To internationalize the extension for you language use the i18-file:
+To internationalize the extension for your language use the i18-file:
 * FooterBar.i18.php
-		
+
 History
 ===========
 
-(fixed): Extension was called multiple times by the hook 'SkinAfterContent', 'ParseAfterTidy' and 'ParseBeforeTidy',
-			where as 'AfterFinalPageOutput' has done bullshit at the end of the page. Now using 'OutputPageParserOutput'.
-(fixed): Couldn't detect the global array.
-(fixed): It wasn't possible to skin the FooterBar. Now using the new ResourceLoader for CSS and JS.
-(fixed): It wasn't possible to use i18. Now included.
-(fixed): It wasn't possible to hide the bar. Javascript included.
-(fixed): It wasn't possible to hide the bar via value. New value added, to allow/deny hiding the bar.
-(fixed): It wasn't possible to use i18 for some text. Now all output is in i18.
-(fixed): There was no explanation of the usage of the global array. Readme is now avaible.
-	
+* (fixed): Extension was called multiple times by the hook 'SkinAfterContent', 'ParseAfterTidy' and 'ParseBeforeTidy', where as 'AfterFinalPageOutput' has done bullshit at the end of the page. Now using 'OutputPageParserOutput'.
+* (fixed): Couldn't detect the global array.
+* (fixed): It wasn't possible to skin the FooterBar. Now using the new ResourceLoader for CSS and JS.
+* (fixed): It wasn't possible to use i18. Now included.
+* (fixed): It wasn't possible to hide the bar. Javascript included.
+* (fixed): It wasn't possible to hide the bar via value. New value added, to allow/deny hiding the bar.
+* (fixed): It wasn't possible to use i18 for some text. Now all output is in i18.
+* (fixed): There was no explanation of the usage of the global array. Readme is now avaible.
+
 ToDo
-======================
+===========
 
 * Add class/name/title tag to the links.
 * Test the FooterBar on other browsers.
