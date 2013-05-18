@@ -1,4 +1,6 @@
 MassiveWiki
 ===========
 
-Extensions for the MediaWiki of MassiveCraft
+Own developed extensions for the MediaWiki of MassiveCraft:
+* FooterBar
+* AppendTalkpage
