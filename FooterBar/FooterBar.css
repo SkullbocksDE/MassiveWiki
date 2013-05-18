@@ -1,3 +1,7 @@
+/**
+ * CSS file for the extension 'FooterBar'.
+ */
+
 /* The outer div-container of the FooterBar. */
 .footerBar{
 	position:fixed;
@@ -40,4 +44,11 @@
 	cursor:pointer;
 	font-weight:bold;
 	font-size:16px;
+}
+
+/* The span-container for the error messages. */
+.footerBarError{
+	font-size:12px;
+	font-weight:bold;
+	color:#ff0000;
 }

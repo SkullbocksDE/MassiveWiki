@@ -1,4 +1,4 @@
-//The hideShow-function for the FooterBar extension
+//The hideShow-function for the extension 'FooterBar'
 function hideShowFooterBar(){
 	if(document.getElementById("footerBarContent").style.display=="block"){
 		document.getElementById("footerBarArrow").innerHTML = "&laquo;";
