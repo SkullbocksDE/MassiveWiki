@@ -51,6 +51,12 @@ To allow users to customize the FooterBar within the MediaWiki, turn on the user
 ** Note1: A user can create the page 'User:Username/FooterBar' with content/links to use this function.
 ** Note2: The global array (from above) and the 'MediaWiki:FooterBar' will be ignored, if the page exists and the value is true.
 
+To concatenate the certain areas like 'MediaWiki:FooterBar', the global array and 'User:Username/FooterBar' use this:
+* $footerBarConcat = array('array','page','user');
+** Note1: Possible values: 'array', 'page', 'user'
+** Note2: The order of the entries in this array effects the concatenate order.
+** Note3: If the array is empty, the following areas will be checked for content: user >> page >> array
+ 
 To redesign the bar via the MediaWiki:Common.css use this classes:
 * .footerBar
 * .footerBarContent
