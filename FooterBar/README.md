@@ -30,12 +30,12 @@ Define Links
 ===========
 You have three options to add links to the FooterBar.
 1. Add links via the global array '$footerBarArray' in 'LocalSettings.php'
-* This method gives you the chance to add links and to customize the links on your own via 'id', 'class', etc.
+1.1. This method gives you the chance to add links and to customize the links on your own via 'id', 'class', etc.
 2. Add links via the wiki page 'MediaWiki:FooterBar' (see option '$footerBarPage')
-* The second method gives you the chance to add links to the bar within the MediaWiki and without changing the LocalSettings.php anymore.
-* People like admins and sysops, all who have the right to change the content within the 'MediaWiki' namespace, can sipport the FooterBar.
+2.1. The second method gives you the chance to add links to the bar within the MediaWiki and without changing the LocalSettings.php anymore.
+2.2. People like admins and sysops, all who have the right to change the content within the 'MediaWiki' namespace, can sipport the FooterBar.
 3. Let user add their own links via their wiki page 'User:Username/FooterBar' (see option '$footerBarUser')
-* This method gives you the power to allow users to add links on their own.
+3.1. This method gives you the power to allow users to add links on their own.
 
 Remember: If you are not using the $footerBarConcat, the extension will show the first allowed accessible content: user >> page >> array
 
