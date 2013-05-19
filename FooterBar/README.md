@@ -29,13 +29,14 @@ To install the 'FooterBar' extension, put the following line in LocalSettings.ph
 Define Links
 ===========
 You have three options to add links to the FooterBar.
+
 1. Add links via the global array '$footerBarArray' in 'LocalSettings.php'
-1.1. This method gives you the chance to add links and to customize the links on your own via 'id', 'class', etc.
+* This method gives you the chance to add links and to customize the links on your own via 'id', 'class', etc.
 2. Add links via the wiki page 'MediaWiki:FooterBar' (see option '$footerBarPage')
-2.1. The second method gives you the chance to add links to the bar within the MediaWiki and without changing the LocalSettings.php anymore.
-2.2. People like admins and sysops, all who have the right to change the content within the 'MediaWiki' namespace, can sipport the FooterBar.
+* The second method gives you the chance to add links to the bar within the MediaWiki and without changing the LocalSettings.php anymore.
+* People like admins and sysops, all who have the right to change the content within the 'MediaWiki' namespace, can sipport the FooterBar.
 3. Let user add their own links via their wiki page 'User:Username/FooterBar' (see option '$footerBarUser')
-3.1. This method gives you the power to allow users to add links on their own.
+* This method gives you the power to allow users to add links on their own.
 
 Remember: If you are not using the $footerBarConcat, the extension will show the first allowed accessible content: user >> page >> array
 
@@ -85,9 +86,9 @@ To create a menu of links, use 'menu':
 * $footerBarArray[]= array('link'=>'IQ_Test','name'=>'IQ Test');
 * $footerBarArray[]= array('link'=>'Category:Help/HowTo','name'=>'Need HowTo?','menu'=>'Help-Section');
 
-*Note1: You only have to enter the name of the menu you want into the field 'menu'.
-*Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test
-*Note3: As you see, the first occurrence of the menuname will create the menu at this position and place all other links with the same menuname into it.
+* Note1: You only have to enter the name of the menu you want into the field 'menu'.
+* Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test
+* Note3: As you see, the first occurrence of the menuname will create the menu at this position and place all other links with the same menuname into it.
 
 The MediaWiki:FooterBar Page and User:Username/FooterBar Page
 ===========
