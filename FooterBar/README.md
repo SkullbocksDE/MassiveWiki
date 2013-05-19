@@ -1,73 +1,141 @@
 MediaWiki :: Extension :: FooterBar
 ===========
 
+Description
+===========
 This code is an extension for MediaWiki ( >= v.1.2).
 
 FooterBar adds a bar at the bottom of each page.
 
-You can add links via a global array to the FooterBar.
+You can add links to the FooterBar via:
+* a global array (LocalSettings.php) = highly customizable
+* a wiki page (MediaWiki:FooterBar) = accessible for admins, sysops within the wiki
+* a user page (User:Username/FooterBar) = accessible for all users (not IP) within the wiki
 
-It's possible to do some personalization (read further).
+It's possible to do much more personalization (read further).
 
+Meta Data
+===========
 * Author: Mike Knappe
-* Version: 0.1
+* Version: 0.4
 * Copyright: © 2013 Mike Knappe
 * License: GNU General Public Licence 2.0 or later
 
 Install Notes
 ===========
-
 To install the 'FooterBar' extension, put the following line in LocalSettings.php:
 * require_once( '$IP/extensions/FooterBar/FooterBar.php' );
 
-Personalization
+Define Links
 ===========
+You have three options to add links to the FooterBar.
+1. Add links via the global array '$footerBarArray' in 'LocalSettings.php'
+* This method gives you the chance to add links and to customize the links on your own via 'id', 'class', etc.
+2. Add links via the wiki page 'MediaWiki:FooterBar' (see option '$footerBarPage')
+* The second method gives you the chance to add links to the bar within the MediaWiki and without changing the LocalSettings.php anymore.
+* People like admins and sysops, all who have the right to change the content within the 'MediaWiki' namespace, can sipport the FooterBar.
+3. Let user add their own links via their wiki page 'User:Username/FooterBar' (see option '$footerBarUser')
+* This method gives you the power to allow users to add links on their own.
 
+Remember: If you are not using the $footerBarConcat, the extension will show the first allowed accessible content: user >> page >> array
+
+The Global Array
+===========
 To append links to the FooterBar, use the following code in LocalSettings.php:
-* $footerBarArray[]= array('name'=>'Help');
-* $footerBarArray[]= array('namespace'=>'Category','name'=>'Help');
+* $footerBarArray[]= array('link'=>'Help');
+* $footerBarArray[]= array('link'=>'Category:Help');
+
+To set an own name for the link use 'name':
+* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!');
+
+To set the title of the link use 'title':
+* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','title'=>'This link will show you the Help category.');
+
+To set an id for the link, use 'id':
+* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','id'=>'Help');
+* Note1: FooterBar will always prepend "footerBarItem_" to the id!
+* Note2: The above code will result in "footerBarItem_Help".
+
+To set a class for the link, use 'class':
+* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','class'=>'Help');
+* Note: FooterBar will always prepend "footerBarItem_" to the class!
+* Note2: The above code will result in "footerBarItem_Help".
 
 To append a string at the end of a url use 'target':
-* $footerBarArray[]= array('namespace'=>'Category','name'=>'Help','target'=>'/Subpage');
-* $footerBarArray[]= array('namespace'=>'Category','name'=>'Help','target'=>'&action=edit');
+* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','target'=>'/Subpage');
+* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','target'=>'&action=edit');
+* $footerBarArray[]= array('link'=>'Category:Help/Subpage','name'=>'Help Me!','target'=>'&action=edit');
+
+* Note: The parameter 'target' will not be checked by any script, except for the value 'self', see below.
 
 To append the current page title to the end of the url use 'target' 'self':
-* $footerBarArray[]= array('namespace'=>'Special','name'=>'WhatLinksHere','target'=>'self');
+* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self');
+
+* Note: The above code will result in "Special:WhatLinksHere/CurrentPage".
 
 To set group rights to a link, use 'groups':
-* $footerBarArray[]= array('namespace'=>'Special','name'=>'WhatLinksHere','target'=>'self','groups'=>array('admin'));
-** Note: There are as default groups "user", "bot", "bureaucrat", "comment", "admin", "sysop"
+* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self','groups'=>array('admin'));
 
+* Note1: Make sure, that you declared an array of strings! 'groups'=>'admin' will not work!
+* Note2: There are as default groups "user", "bot", "bureaucrat", "comment", "admin", "sysop"
+
+The MediaWiki:FooterBar Page and User:Username/FooterBar Page
+===========
+The only thing you have to do to use this method:
+* Turn on the needed option '$footerBarPage' or '$footerBarUser'.
+* Create the page MediaWiki:FooterBar and insert the links you want to have in the FooterBar.
+
+Note: Text, Images, Linebreak, Videos, Signs, Tables and all that will be ignored from the script, it only picks the links.
+
+Options
+===========
 To turn off the hide-function use this:
 * $footerBarHideable = false;
 
 To edit the content of the FooterBar within the MediaWiki, turn on the page detection:
 * $footerBarPage = true;
-** Note1: You have to create the page 'MediaWiki:FooterBar' with content/links to use this function.
-** Note2: The global array (from above) will be no longer used, if the page exists and the value is true.
+
+* Note1: You have to create the page 'MediaWiki:FooterBar' with content/links to use this function.
+* Note2: The global array (from above) will be no longer used, if the page exists and the value is true.
 
 To allow users to customize the FooterBar within the MediaWiki, turn on the user page detection:
 * $footerBarUser = true;
-** Note1: A user can create the page 'User:Username/FooterBar' with content/links to use this function.
-** Note2: The global array (from above) and the 'MediaWiki:FooterBar' will be ignored, if the page exists and the value is true.
+
+* Note1: A user can create the page 'User:Username/FooterBar' with content/links to use this function.
+* Note2: The global array (from above) and the 'MediaWiki:FooterBar' will be ignored, if the page exists and the value is true.
 
 To concatenate the certain areas like 'MediaWiki:FooterBar', the global array and 'User:Username/FooterBar' use this:
 * $footerBarConcat = array('array','page','user');
-** Note1: Possible values: 'array', 'page', 'user'
-** Note2: The order of the entries in this array effects the concatenate order.
-** Note3: If the array is empty, the following areas will be checked for content: user >> page >> array
+
+* Note1: Possible values: 'array', 'page', 'user'
+* Note2: The order of the entries in this array effects the concatenate order.
+* Note3: If the array is empty, the following areas will be checked for content: user >> page >> array
+
+To debug the global array of the FooterBar, maybe because you are missing a link, then use this:
+* $footerBarShowErrors = true;
+
+* Note1: Default value is 'false'.
+* Note2: FooterBar will auto. drop items/links, which are not declared in the right way like an array instead of a string.
  
-To redesign the bar via the MediaWiki:Common.css use this classes:
+Styling
+===========
+To redesign the bar via the MediaWiki:Common.css use these classes:
 * .footerBar
 * .footerBarContent
 * .footerBarArrow
+* .footerBarError
 
+To redesign the links use the 'class' or 'id' parameter:
+* .footerBarItem_{parameter}
+* #footerBarItem_{parameter}
+
+Internationalization
+===========
 To internationalize the extension for your language use the i18-file:
 * FooterBar.i18.php
 
 History
 ===========
-
 * (fixed): Extension was called multiple times by the hook 'SkinAfterContent', 'ParseAfterTidy' and 'ParseBeforeTidy', where as 'AfterFinalPageOutput' has done bullshit at the end of the page. Now using 'OutputPageParserOutput'.
 * (fixed): Couldn't detect the global array.
 * (fixed): It wasn't possible to skin the FooterBar. Now using the new ResourceLoader for CSS and JS.
@@ -89,7 +157,6 @@ History
  
 ToDo
 ===========
-
 * Create a more readable source code with code reduction by using loops.
 * Add class/name/title tag to the links.
 * Test the FooterBar on other browsers.
