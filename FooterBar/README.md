@@ -79,6 +79,16 @@ To set group rights to a link, use 'groups':
 * Note1: Make sure, that you declared an array of strings! 'groups'=>'admin' will not work!
 * Note2: There are as default groups "user", "bot", "bureaucrat", "comment", "admin", "sysop"
 
+To create a menu of links, use 'menu':
+* $footerBarArray[]= array('link'=>'PI_Test','name'=>'PI Test');
+* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','menu'=>'Help-Section');
+* $footerBarArray[]= array('link'=>'IQ_Test','name'=>'IQ Test');
+* $footerBarArray[]= array('link'=>'Category:Help/HowTo','name'=>'Need HowTo?','menu'=>'Help-Section');
+
+*Note1: You only have to enter the name of the menu you want into the field 'menu'.
+*Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test
+*Note3: As you see, the first occurrence of the menuname will create the menu at this position and place all other links with the same menuname into it.
+
 The MediaWiki:FooterBar Page and User:Username/FooterBar Page
 ===========
 The only thing you have to do to use this method:
@@ -152,15 +162,24 @@ History
 * (fixed): It wasn't possible to concatenate the certain areas like 'MediaWiki:FooterBar' and the global array. The array '$footerBarConcat' will handle the concatenate. Possible values: 'array', 'page', 'user'. The order of the entries in this array effects the concatenate order. If the $footerBarConcat is empty, the highest area will be selected: user >> page >> array
 * (fixed): If wasn't possible to declare a link of the global array only for admins. New field inserted.
 * (fixed): There where no error messages from the script. Now added into source and i18.
+* (fixed): On SpecialPages the FooterBar was hooked multiple time and it was added to the top. Now using again SkinAfterContent.
+* (fixed): It wasn't possible to name a link on your own. Now added a new field 'title'.
+* (fixed): It wasn't possible to give a link a certain id and class. Now added new fields 'id' and 'class'.
+* (fixed): It wasn't possible to turn off the error messages and use them as some kind of debug. Now added value '$footerBarShowErrors'.
+* (fixed): It wasn't possible to change the hideShow behaviour. JS is now checking for className. CSS classes accessible via: '.footerBar.footerBarHide' and '.footerBarContent.footerBarContentHide'.
+* (fixed): FooterBar wasn't displayed on SpecialPages, EditForms and Login. Hooks rearranged! Now using to create the Bar 'ArticlePageDataAfter' and 'SpecialPageBeforeExecute' and to show 'SkinAfterContent'. It also fixed the bug, that the JS was declared inline
+* (fixed): The status of the bar wasn't saved during a session. Now using cookies via the jQuery#cookie. To check the cookie there is a new inline JS, but only to call a head function. ^^
+* (fixed): It wasn't possible to create menus for the FooterBar. New field added 'menu'. The menu will be created at the position of the first match of a certain menuname.
+
 * (open) : The 'self' link doesn't work proper, because of the getTitle-function.
 * (open) : If no value of '$footerBarConcat' fits, then the FooterBar is empty.
+* (open) : New function of menu creation needs much better CSS.
+* (open) : Let users create menus too.
+* (open) : Catch possible menu errors.
+* (open) : Get rid of the global value that stores the HTML of the FooterBar.
+* (open) : Restructure the JS functions.
  
 ToDo
 ===========
-* Create a more readable source code with code reduction by using loops.
-* Add class/name/title tag to the links.
-* Test the FooterBar on other browsers.
-* Include JS via file, currently it's an inline script.
-* Declare an option, where the current status of the bar is saved in during a session.
-* Implement to add multiple links as a hove menu.
-* Use the class name of the FooterBar to switch between hide/show (for JS).
+ * Create a more readable source code with code reduction by using loops.
+ * Test the FooterBar on other browsers.

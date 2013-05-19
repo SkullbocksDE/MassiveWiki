@@ -54,6 +54,7 @@
  * @bug (open) : Let users create menus too.
  * @bug (open) : Catch possible menu errors.
  * @bug (open) : Get rid of the global value that stores the HTML of the FooterBar.
+ * @bug (open) : Restructure the JS functions.
  *
  * @todo Create a more readable source code with code reduction by using loops.
  * @todo Test the FooterBar on other browsers.
