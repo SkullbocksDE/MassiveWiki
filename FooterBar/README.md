@@ -30,11 +30,16 @@ Define Links
 You have three options to add links to the FooterBar.
 
 1. Add links via the global array '$footerBarArray' in 'LocalSettings.php'
+
 > * This method gives you the chance to add links and to customize the links on your own via 'id', 'class', etc.
+
 2. Add links via the wiki page 'MediaWiki:FooterBar' (see option '$footerBarPage')
+
 > * The second method gives you the chance to add links to the bar within the MediaWiki and without changing the LocalSettings.php anymore.
 > * People like admins and sysops, all who have the right to change the content within the 'MediaWiki' namespace, can sipport the FooterBar.
+
 3. Let user add their own links via their wiki page 'User:Username/FooterBar' (see option '$footerBarUser')
+
 > * This method gives you the power to allow users to add links on their own.
 
 Remember: If you are not using the $footerBarConcat, the extension will show the first allowed accessible content: user >> page >> array
@@ -52,11 +57,13 @@ To set the title of the link use 'title':
 
 To set an id for the link, use 'id':
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','id'=>'Help');
+
 > * Note1: FooterBar will always prepend "footerBarItem_" to the id!
 > * Note2: The above code will result in "footerBarItem_Help".
 
 To set a class for the link, use 'class':
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','class'=>'Help');
+
 > * Note1: FooterBar will always prepend "footerBarItem_" to the class!
 > * Note2: The above code will result in "footerBarItem_Help".
 
@@ -65,14 +72,16 @@ To append a string at the end of a url use 'target':
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','target'=>'&action=edit');
 * $footerBarArray[]= array('link'=>'Category:Help/Subpage','name'=>'Help Me!','target'=>'&action=edit');
 
-* Note: The parameter 'target' will not be checked by any script, except for the value 'self', see below.
+> * Note: The parameter 'target' will not be checked by any script, except for the value 'self', see below.
 
 To append the current page title to the end of the url use 'target' 'self':
 * $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self');
+
 > * Note: The above code will result in "Special:WhatLinksHere/CurrentPage".
 
 To set group rights to a link, use 'groups':
 * $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self','groups'=>array('admin'));
+
 > * Note1: Make sure, that you declared an array of strings! 'groups'=>'admin' will not work!
 > * Note2: There are as default groups "user", "bot", "bureaucrat", "comment", "admin", "sysop"
 
@@ -82,9 +91,9 @@ To create a menu of links, use 'menu':
 * $footerBarArray[]= array('link'=>'IQ_Test','name'=>'IQ Test');
 * $footerBarArray[]= array('link'=>'Category:Help/HowTo','name'=>'Need HowTo?','menu'=>'Help-Section');
 
-* Note1: You only have to enter the name of the menu you want into the field 'menu'.
-* Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test
-* Note3: As you see, the first occurrence of the menuname will create the menu at this position and place all other links with the same menuname into it.
+> * Note1: You only have to enter the name of the menu you want into the field 'menu'.
+> * Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test
+> * Note3: As you see, the first occurrence of the menuname will create the menu at this position and place all other links with the same menuname into it.
 
 ### The MediaWiki:FooterBar Page and  Page ###
 The only thing you have to do to use this method:
@@ -100,22 +109,26 @@ To turn off the hide-function use this:
 
 To edit the content of the FooterBar within the MediaWiki, turn on the page detection:
 * $footerBarPage = true;
+
 > * Note1: You have to create the page 'MediaWiki:FooterBar' with content/links to use this function.
 > * Note2: The global array (from above) will be no longer used, if the page exists and the value is true.
 
 To allow users to customize the FooterBar within the MediaWiki, turn on the user page detection:
 * $footerBarUser = true;
+
 > * Note1: A user can create the page 'User:Username/FooterBar' with content/links to use this function.
 > * Note2: The global array (from above) and the 'MediaWiki:FooterBar' will be ignored, if the page exists and the value is true.
 
 To concatenate the certain areas like 'MediaWiki:FooterBar', the global array and 'User:Username/FooterBar' use this:
 * $footerBarConcat = array('array','page','user');
+
 > * Note1: Possible values: 'array', 'page', 'user'
 > * Note2: The order of the entries in this array effects the concatenate order.
 > * Note3: If the array is empty, the following areas will be checked for content: user >> page >> array
 
 To debug the global array of the FooterBar, maybe because you are missing a link, then use this:
 * $footerBarShowErrors = true;
+
 > * Note1: Default value is 'false'.
 > * Note2: FooterBar will auto. drop items/links, which are not declared in the right way like an array instead of a string.
  
