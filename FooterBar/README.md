@@ -86,24 +86,21 @@ To append a string at the end of a url, use 'target':
 
 To append the current page title to the end of the url, use 'target'=>'self':
 * $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self');
-
-> * Note: The above code will result in "Special:WhatLinksHere/CurrentPage".
+    * > _Note: The above code will result in "Special:WhatLinksHere/CurrentPage"._
 
 To set group rights to a link, use 'groups':
 * $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self','groups'=>array('admin'));
-
-> * Note1: Make sure, that you have declared an array of strings! 'groups'=>'admin' will not work!
-> * Note2: There are as default groups "user", "bot", "bureaucrat", "admin", "sysop"
+    * > _Note1: Make sure, that you have declared an array of strings! 'groups'=>'admin' will not work!_
+    * > _Note2: There are as default groups "user", "bot", "bureaucrat", "admin", "sysop"_
 
 To create a menu of links, use 'menu':
 * $footerBarArray[]= array('link'=>'PI_Test','name'=>'PI Test');
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','menu'=>'Help-Section');
 * $footerBarArray[]= array('link'=>'IQ_Test','name'=>'IQ Test');
 * $footerBarArray[]= array('link'=>'Category:Help/HowTo','name'=>'Need HowTo?','menu'=>'Help-Section');
-
-> * Note1: You only have to enter the name of the menu into the field 'menu'.
-> * Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test
-> * Note3: As you see, the first occurrence of the menu name will create the menu at that position and appends all other links with the same menu name.
+    * > _Note1: You only have to enter the name of the menu into the field 'menu'._
+    * > _Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test_
+    * > _Note3: As you see, the first occurrence of the menu name will create the menu at that position and appends all other links with the same menu name._
 
 ### The Wiki FooterBar Page <a name="WikiPage"></a>  ###
 The only thing you have to do to use this method:
@@ -193,6 +190,7 @@ Here you can see all bugs of the FooterBar extension.
 * (fixed): FooterBar wasn't displayed on SpecialPages, EditForms and Login. Hooks rearranged! Now using to create the Bar 'ArticlePageDataAfter' and 'SpecialPageBeforeExecute' and to show 'SkinAfterContent'. It also fixed the bug, that the JS was declared inline
 * (fixed): The status of the bar wasn't saved during a session. Now using cookies via the jQuery.cookie. To check the cookie there is a new inline JS, but only to call a head function.
 * (fixed): It wasn't possible to create menus for the FooterBar. New field added 'menu'. The menu will be created at the position of the first match of a certain menuname.
+
 #### Open <a name="Open"></a>  ####
 * (open) : The 'self' link doesn't work proper, because of the getTitle-function.
 * (open) : If no value of '$footerBarConcat' fits, then the FooterBar is empty.
@@ -203,6 +201,5 @@ Here you can see all bugs of the FooterBar extension.
 * (open) : Restructure the JS functions.
  
 ### ToDo <a name="ToDo"></a>###
------------
 * Create a more readable source code with code reduction by using loops.
 * Test the FooterBar on other browsers.
