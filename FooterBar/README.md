@@ -54,8 +54,8 @@ You have three options to add links to the FooterBar.
 3. Let user add their own links via their wiki page 'User:Username/FooterBar' (see option **['$footerBarUser'](#footerBarUser)**)
     * _This method gives you the power to allow users to add links on their own._
 
-Remember: If you are not using the **['$footerBarConcat'](#footerBarConcat)**, the extension will show the first allowed and accessible content:
-* User:Username/FooterBar >> MediaWiki:FooterBar >> global array
+Remember: If you are not using the **['$footerBarConcat'](#footerBarConcat)**, the extension will show the first allowed and accessible content:  
+User:Username/FooterBar >> MediaWiki:FooterBar >> global array
 
 ### The Global Array <a name="footerBarArray"></a> ###
 To append links to the FooterBar, use the following code in LocalSettings.php:
@@ -74,74 +74,69 @@ To set an id for the link, use 'id':
     * _Note2: The above code will result in "footerBarItem_Help"._
 
 To set a class for the link, use 'class':
-* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','class'=>'Help');  
-> * _Note1: FooterBar will always prepend "footerBarItem_" to the class!_
-> * _Note2: The above code will result in "footerBarItem_Help"._
+* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','class'=>'Help');
+    * _Note1: FooterBar will always prepend "footerBarItem_" to the class!_
+    * _Note2: The above code will result in "footerBarItem_Help"._
 
 To append a string at the end of a url, use 'target':
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','target'=>'/Subpage');
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','target'=>'&action=edit');
-* $footerBarArray[]= array('link'=>'Category:Help/Subpage','name'=>'Help Me!','target'=>'&action=edit');  
-> * _Note: The parameter 'target' will not be checked by any script, except for the value 'self', see below._
+* $footerBarArray[]= array('link'=>'Category:Help/Subpage','name'=>'Help Me!','target'=>'&action=edit');
+    * _Note: The parameter 'target' will not be checked by any script, except for the value 'self', see below._
 
 To append the current page title to the end of the url, use 'target'=>'self':
-* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self');  
-> * _Note: The above code will result in "Special:WhatLinksHere/CurrentPage"._
+* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self');
+    * _Note: The above code will result in "Special:WhatLinksHere/CurrentPage"._
 
 To set group rights to a link, use 'groups':
-* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self','groups'=>array('admin'));  
-> * _Note1: Make sure, that you have declared an array of strings! 'groups'=>'admin' will not work!_
-> * _Note2: There are as default groups "user", "bot", "bureaucrat", "admin", "sysop"_
+* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self','groups'=>array('admin'));
+    * _Note1: Make sure, that you have declared an array of strings! 'groups'=>'admin' will not work!_
+    * _Note2: There are as default groups "user", "bot", "bureaucrat", "admin", "sysop"_
 
 To create a menu of links, use 'menu':
 * $footerBarArray[]= array('link'=>'PI_Test','name'=>'PI Test');
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','menu'=>'Help-Section');
 * $footerBarArray[]= array('link'=>'IQ_Test','name'=>'IQ Test');
-* $footerBarArray[]= array('link'=>'Category:Help/HowTo','name'=>'Need HowTo?','menu'=>'Help-Section');  
-> * _Note1: You only have to enter the name of the menu into the field 'menu'._
-> * _Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test_
-> * _Note3: As you see, the first occurrence of the menu name will create the menu at that position and appends all other links with the same menu name._
+* $footerBarArray[]= array('link'=>'Category:Help/HowTo','name'=>'Need HowTo?','menu'=>'Help-Section');
+    * _Note1: You only have to enter the name of the menu into the field 'menu'._
+    * _Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test_
+    * _Note3: As you see, the first occurrence of the menu name will create the menu at that position and appends all other links with the same menu name._
 
 ### The Wiki FooterBar Page <a name="WikiPage"></a>  ###
 The only thing you have to do to use this method:
 * Turn on the needed option **['$footerBarPage'](#footerBarPage)** or **['$footerBarUser'](#footerBarUser)**.
 * Create the page 'MediaWiki:FooterBar' / 'User:Username/FooterBar' and insert the links you want to have in the FooterBar.
-
-Note: Text, Images, Linebreaks, Videos, Signs, Tables and all that will be ignored by the script, it only picks the links.
+    * _Note: Text, Images, Linebreaks, Videos, Signs, Tables and all that will be ignored by the script, it only picks the links._
 
 Options <a name="Options"></a> 
 -----------
 To turn off the hide-function, use '$footerBarHideable':
 * $footerBarHideable = false;
 
-To edit the content of the FooterBar within the MediaWiki, use '$footerBarPage': <a name="footerBarPage"></a> 
+To edit the content of the FooterBar within the MediaWiki, use '$footerBarPage': <a name="footerBarPage"></a>
 * $footerBarPage = true;
+    * _Note1: You have to create the page 'MediaWiki:FooterBar' with links to use this function._
+    * _Note2: All the 'global array' links will be ignored, if the MediaWiki FooterBar page exists and the value is true._
+    * _Note3: To prevent the behaviour of Note2 see the option **['$footerBarConcat'](#footerBarConcat)**._
 
-> * Note1: You have to create the page 'MediaWiki:FooterBar' with links to use this function.
-> * Note2: All the 'global array' links will be ignored, if the MediaWiki FooterBar page exists and the value is true.
-> * Note3: To prevent the behaviour of Note2 see the option **['$footerBarConcat'](#footerBarConcat)**.
-
-To allow users to customize the FooterBar within the MediaWiki, use '$footerBarUser': <a name="footerBarUser"></a> 
+To allow users to customize the FooterBar within the MediaWiki, use '$footerBarUser': <a name="footerBarUser"></a>
 * $footerBarUser = true;
-
-> * Note1: A user can create the page 'User:Username/FooterBar' with links to use this function.
-> * Note2: All the 'global array' and the 'MediaWiki:FooterBar' links will be ignored, if the user created FooterBar page exists and the value is true.
-> * Note3: To prevent the behaviour of Note2 see the option **['$footerBarConcat'](#footerBarConcat)**.
+    * _Note1: A user can create the page 'User:Username/FooterBar' with links to use this function._
+    * _Note2: All the 'global array' and the 'MediaWiki:FooterBar' links will be ignored, if the user created FooterBar page exists and the value is true._
+    * _Note3: To prevent the behaviour of Note2 see the option **['$footerBarConcat'](#footerBarConcat)**._
 
 To concatenate the certain areas like 'MediaWiki:FooterBar', the global array and 'User:Username/FooterBar', use '$footerBarConcat': <a name="footerBarConcat"></a>
 * $footerBarConcat = array('array','page','user');
-
-> * Note1: Possible values: 'array', 'page', 'user'
-> * Note2: The order of the entries in this array effects the concatenate order of the areas.
-> * Note3: If the array is empty, the following areas will be checked for content (depending on the options) in this order: user >> page >> array
+    * _Note1: Possible values: 'array', 'page', 'user'_
+    * _Note2: The order of the entries in this array effects the concatenate order of the areas._
+    * _Note3: If the array is empty, the following areas will be checked for content (depending on the options) in this order: user >> page >> array_
 
 To debug the **['global array'](#footerBarArray)** of the FooterBar (maybe you are missing a link), use '$footerBarShowErrors':
 * $footerBarShowErrors = true;
-
-> * Note1: Default value is 'false'.
-> * Note2: FooterBar will auto. drop items/links, which are not declared in the right way like an array instead of a string.
+    * _Note1: Default value is 'false'._
+    * _Note2: FooterBar will auto. drop items/links, which are not declared in the right way like an array instead of a string._
  
-Styling <a name="Styling"></a> 
+Styling <a name="Styling"></a>
 -----------
 To redesign the bar via the MediaWiki:Common.css use these classes:
 * .footerBar
@@ -158,14 +153,14 @@ Internationalization <a name="Internationalization"></a>
 To internationalize the extension for your language use the i18-file:
 * FooterBar.i18.php
 
-History <a name="History"></a> 
+History <a name="History"></a>
 -----------
 Here you can see the history of the FooterBar development.
 
-### Bugs <a name="Bugs"></a>  ###
+### Bugs <a name="Bugs"></a> ###
 Here you can see all bugs of the FooterBar extension.
 
-#### Fixed <a name="Fixed"></a>  ####
+#### Fixed <a name="Fixed"></a> ####
 * (fixed): Extension was called multiple times by the hook 'SkinAfterContent', 'ParseAfterTidy' and 'ParseBeforeTidy', where as 'AfterFinalPageOutput' has done bullshit at the end of the page. Now using 'OutputPageParserOutput'.
 * (fixed): Couldn't detect the global array.
 * (fixed): It wasn't possible to skin the FooterBar. Now using the new ResourceLoader for CSS and JS.
@@ -190,16 +185,21 @@ Here you can see all bugs of the FooterBar extension.
 * (fixed): FooterBar wasn't displayed on SpecialPages, EditForms and Login. Hooks rearranged! Now using to create the Bar 'ArticlePageDataAfter' and 'SpecialPageBeforeExecute' and to show 'SkinAfterContent'. It also fixed the bug, that the JS was declared inline
 * (fixed): The status of the bar wasn't saved during a session. Now using cookies via the jQuery.cookie. To check the cookie there is a new inline JS, but only to call a head function.
 * (fixed): It wasn't possible to create menus for the FooterBar. New field added 'menu'. The menu will be created at the position of the first match of a certain menuname.
-
-#### Open <a name="Open"></a>  ####
+* (fixed): The SideBar had a higher z-index than the FooterBar. Now using Z-Index.
+* (fixed): HideShow was not using MediaWiki functions. Own Hide/Show JS removed and now using the mw-toggle and collapse classes.
+* (fixed): CSS was messy as hell trough the restructuring. Redesigned the CSS (shortened, unified, clearer).
+* (fixed): Collector was messy as hell trough the restructuring. Restructured the HTML collect (shortened, unified, clearer).
+* (fixed): Cookie wasn't working anymore trough the restructuring. Adjusted.
+ 
+#### Open <a name="Open"></a> ####
+* (open) : It's not possible to add achors to navigate within the MediaWiki.
 * (open) : The 'self' link doesn't work proper, because of the getTitle-function.
 * (open) : If no value of '$footerBarConcat' fits, then the FooterBar is empty.
-* (open) : New function of menu creation needs much better CSS.
 * (open) : Let users create menus too.
 * (open) : Catch possible menu errors.
 * (open) : Get rid of the global value that stores the HTML of the FooterBar.
-* (open) : Restructure the JS functions.
+* (opne) : Try to use the MediaWiki classes for the menu function too.
  
-### ToDo <a name="ToDo"></a>###
+### ToDo <a name="ToDo"></a> ###
 * Create a more readable source code with code reduction by using loops.
 * Test the FooterBar on other browsers.

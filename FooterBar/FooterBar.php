@@ -8,7 +8,7 @@
  *
  * @ingroup 	Extensions
  * @author		Mike Knappe
- * @version		0.5
+ * @version		0.6
  * @copyright	© 2013 Mike Knappe
  * @license 	GNU General Public Licence 2.0 or later
  *
@@ -47,14 +47,19 @@
  *				 To check the cookie there is a new inline JS, but only to call a head function. ^^
  * @bug (fixed): It wasn't possible to create menus for the FooterBar. New field added 'menu'.
  *				 The menu will be created at the position of the first match of a certain menuname.
+ * @bug (fixed): The SideBar had a higher z-index than the FooterBar. Now using Z-Index.
+ * @bug (fixed): HideShow was not using MediaWiki functions. Own Hide/Show JS removed and now using the mw-toggle and collapse classes.
+ * @bug (fixed): CSS was messy as hell trough the restructuring. Redesigned the CSS (shortened, unified, clearer).
+ * @bug (fixed): Collector was messy as hell trough the restructuring. Restructured the HTML collect (shortened, unified, clearer).
+ * @bug (fixed): Cookie wasn't working anymore trough the restructuring. Included again.
  *
+ * @bug (open) : It's not possible to add achors to navigate within the MediaWiki.
  * @bug (open) : The 'self' link doesn't work proper, because of the getTitle-function.
  * @bug (open) : If no value of '$footerBarConcat' fits, then the FooterBar is empty.
- * @bug (open) : New function of menu creation needs much better CSS.
  * @bug (open) : Let users create menus too.
  * @bug (open) : Catch possible menu errors.
  * @bug (open) : Get rid of the global value that stores the HTML of the FooterBar.
- * @bug (open) : Restructure the JS functions.
+ * @bug (opne) : Try to use the MediaWiki classes for the menu function too.
  *
  * @todo Create a more readable source code with code reduction by using loops.
  * @todo Test the FooterBar on other browsers.
@@ -137,24 +142,27 @@ class FooterBar{
 	//Register the JS due to the variable $footerBarHideable (registration is still a workaround)
 	public static function createFooterBar( $article, $row ){
 		global $wgOut, $wgUser, $footerBarArray, $footerBarHideable, $footerBarPage, $footerBarUser, $footerBarConcat, $footerBarHtmlContent;
-		if($footerBarHideable==true)
-			$wgOut->addHeadItem("footerBar","<script type='text/javascript'>function hideshow(name){if(document.getElementById(name).style.display==\"none\"){document.getElementById(name).style.display=\"block\";}else{document.getElementById(name).style.display=\"none\";}} function initFooterBar(){ if( $.cookie( 'FooterBar' ) == 'Off' ){ document.getElementById(\"footerBarArrow\").innerHTML = \"".wfMessage( 'footerbar-arrow-open' )->inContentLanguage()->plain()."\";document.getElementById(\"footerBar\").className=\"footerBar footerBarHide\";document.getElementById(\"footerBarContent\").className=\"footerBarContent footerBarContentHide\"; } } function hideShowBar(){if(document.getElementById(\"footerBar\").className==\"footerBar\"){ $.cookie( 'FooterBar', 'Off', { expires: 7, path: '/'} ); document.getElementById(\"footerBarArrow\").innerHTML = \"".wfMessage( 'footerbar-arrow-open' )->inContentLanguage()->plain()."\";document.getElementById(\"footerBar\").className=\"footerBar footerBarHide\";document.getElementById(\"footerBarContent\").className=\"footerBarContent footerBarContentHide\";}else{ $.cookie( 'FooterBar', 'On', { expires: 7, path: '/'} ); document.getElementById(\"footerBarArrow\").innerHTML = \"".wfMessage( 'footerbar-arrow-close' )->inContentLanguage()->plain()."\";document.getElementById(\"footerBar\").className=\"footerBar\";document.getElementById(\"footerBarContent\").className=\"footerBarContent\";}}</script>");
 		
-		$contentHTML = "<div class='footerBar' id='footerBar'><div class='footerBarContent' id='footerBarContent'>";
+		if($footerBarHideable==true)
+			$wgOut->addHeadItem("footerBar","<script type='text/javascript'>function initFooterBar(){ if( $.cookie( \"FooterBar\" ) == \"Off\" ){ document.getElementById(\"mw-customcollapsible-footerBarStyle\").className = \"mw-collapsible footerBarStyle mw-collapsed\"; } } function storeFooterBar(){if(document.getElementById(\"mw-customcollapsible-footerBarStyle\").className==\"mw-collapsible footerBarStyle mw-made-collapsible mw-collapsed\"){ $.cookie( 'FooterBar', 'On', { expires: 7, path: '/'} ); }else{ $.cookie( 'FooterBar', 'Off', { expires: 7, path: '/'} ); }}</script>");
+		
+		$contentHTML = "<div class='footerBar' id='footerBar'><div class='mw-collapsible footerBarStyle' id='mw-customcollapsible-footerBarStyle'><div class='mw-collapsible-content footerBarContent' id='footerBarContent'>";
 		$barContentHTML = array('user'=>'','page'=>'','array'=>'');
 		$titleObject = "";
 		$titleObjArr = array();
 		if( $footerBarUser==true && $wgUser->getId()!=0)
-			$titleObjArr[] = Title::newFromText( 'User:'.$wgUser->getName().'/FooterBar' );
+			$titleObjArr['user'] = Title::newFromText( 'User:'.$wgUser->getName().'/FooterBar' );
 		if( $footerBarPage==true )
-			$titleObjArr[] = Title::newFromText( 'MediaWiki:FooterBar' );
-		foreach($titleObjArr as $titleObject){
+			$titleObjArr['page'] = Title::newFromText( 'MediaWiki:FooterBar' );
+		foreach($titleObjArr as $kkey => $titleObject){
 			if($titleObject != "" && $titleObject->exists()){
 				$pageObject = WikiPage::newFromId( $titleObject->getArticleID() );
 				$footerTextPlain = $pageObject->getText();
 				FooterBar::extractLinksFromFooterBarPage($footerTextPlain);
 				$footerTextWiki = wfMessage( 'footerbar-content' )->params( $footerTextPlain )->inContentLanguage()->parse();
-				$barContentHTML['user'] = $footerTextWiki;
+				$ccS = explode(wfMessage( 'footerbar-delimiter' )->inContentLanguage()->plain(),$footerTextWiki );
+				$footerTextWiki = "<li>".wfMessage( 'footerbar-delimiter' )->inContentLanguage()->plain().implode($ccS, "</li><li>".wfMessage( 'footerbar-delimiter' )->inContentLanguage()->plain())."</li>";
+				$barContentHTML[$kkey] = $footerTextWiki;
 			}
 		}
 		
@@ -178,11 +186,15 @@ class FooterBar{
 					if( $groupGate ){
 						$exGate = false;
 						$titleObject = Title::newFromText( $value['link'] );
-						$cString = '<a href="'.$titleObject->getLinkURL();
+						$cString = '<a href="';
+						if(isset($value['target']) && $value['target']=='top')
+								$cString .= '#mw-page-base';
+						else
+							$cString .= $titleObject->getLinkURL();
 						if(isset($value['target']) && $value['target']!='')
 							if($value['target']=='self')
 								$cString .= '/'.$wgOut->getPageTitle();
-							else
+							else if($value['target']!='top')
 								$cString .= $value['target'];
 						$cString .= '" ';
 						
@@ -212,15 +224,16 @@ class FooterBar{
 			}
 			$mArray = array();
 			foreach($menuArray as $mKey=>$mVal){
-				$mArray[$mKey] = '<a href="#" onmouseover="hideshow(\'footerBarMenu_'.$mKey.'\');">'.$mKey.'</a><ul id="footerBarMenu_'.$mKey.'" style="display:none;"><li>'.implode($mVal, '</li><li>').'</li></ul>';
+				$mArray[$mKey] = '<div class="menu aaa"><ul id="footerBarMenu_'.$mKey.'"><li>'.implode($mVal, '</li><li>').'</li></ul></div>';
 			}
 			$lCounter = 0;
 			if(count($linkArray)>0)
 				$barContentHTML['array'] .= '<ul>';
 			foreach($linkArray as $lKey => $lLink){
 				$barContentHTML['array'] .= '<li>';
-				if($lKey == $lLink){
-					$barContentHTML['array'] .= $mArray[$lKey];
+				if($lKey.'' == $lLink){
+					if($lCounter!=0);
+						$barContentHTML['array'] .= '<div class="vectorMenu"> &Delta; <a href="#">'.$lKey.'</a>'.$mArray[$lKey].' </div>';
 				}else{
 					$barContentHTML['array'] .= $lLink;
 				}
@@ -229,11 +242,6 @@ class FooterBar{
 				$barContentHTML['array'] .= '</li>';
 				$lCounter++;
 			}
-			/*
-			if(count($linkArray)>0)
-				$barContentHTML['array'] .= '</li></ul>';
-			$barContentHTML['array'] = implode($mArray, "");
-			$barContentHTML['array'] .= '<ul><li>'.implode($linkArray, "</li><li>".wfMessage( 'footerbar-delimiter' )->inContentLanguage()->plain()).'</li></ul>';*/
 		}else{
 			FooterBar::errorMsg('footerbar-error-array');
 		}
@@ -248,10 +256,10 @@ class FooterBar{
 				if($value!=""){	$outputContentHTML[] = $value; break; }
 		}
 		
-		$contentHTML .= implode($outputContentHTML, wfMessage( 'footerbar-delimiter' )->inContentLanguage()->plain());
+		$contentHTML .= implode($outputContentHTML, '');
 		$contentHTML .= "</div>";
 		if($footerBarHideable==true){
-			$contentHTML .= "<div class='footerBarArrow' id='footerBarArrow' onclick='hideShowBar();'>".wfMessage( 'footerbar-arrow-close' )->inContentLanguage()->plain()."</div>";
+			$contentHTML .= "<div class='mw-customtoggle-footerBarStyle footerBarArrow' id='footerBarArrow' onclick='storeFooterBar();' ><span></span></div></div>";
 		}
 		$contentHTML .= "</div><script type='text/javascript'>initFooterBar();</script>";
 		
