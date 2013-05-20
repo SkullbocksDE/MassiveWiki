@@ -74,33 +74,33 @@ To set an id for the link, use 'id':
     * _Note2: The above code will result in "footerBarItem_Help"._
 
 To set a class for the link, use 'class':
-* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','class'=>'Help');
-    * _Note1: FooterBar will always prepend "footerBarItem_" to the class!_
-    * _Note2: The above code will result in "footerBarItem_Help"._
+* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','class'=>'Help');  
+> * _Note1: FooterBar will always prepend "footerBarItem_" to the class!_
+> * _Note2: The above code will result in "footerBarItem_Help"._
 
 To append a string at the end of a url, use 'target':
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','target'=>'/Subpage');
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','target'=>'&action=edit');
-* $footerBarArray[]= array('link'=>'Category:Help/Subpage','name'=>'Help Me!','target'=>'&action=edit');
-    * _Note: The parameter 'target' will not be checked by any script, except for the value 'self', see below._
+* $footerBarArray[]= array('link'=>'Category:Help/Subpage','name'=>'Help Me!','target'=>'&action=edit');  
+> * _Note: The parameter 'target' will not be checked by any script, except for the value 'self', see below._
 
 To append the current page title to the end of the url, use 'target'=>'self':
-* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self');
-    * > _Note: The above code will result in "Special:WhatLinksHere/CurrentPage"._
+* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self');  
+> * _Note: The above code will result in "Special:WhatLinksHere/CurrentPage"._
 
 To set group rights to a link, use 'groups':
-* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self','groups'=>array('admin'));
-    * > _Note1: Make sure, that you have declared an array of strings! 'groups'=>'admin' will not work!_
-    * > _Note2: There are as default groups "user", "bot", "bureaucrat", "admin", "sysop"_
+* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self','groups'=>array('admin'));  
+> * _Note1: Make sure, that you have declared an array of strings! 'groups'=>'admin' will not work!_
+> * _Note2: There are as default groups "user", "bot", "bureaucrat", "admin", "sysop"_
 
 To create a menu of links, use 'menu':
 * $footerBarArray[]= array('link'=>'PI_Test','name'=>'PI Test');
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','menu'=>'Help-Section');
 * $footerBarArray[]= array('link'=>'IQ_Test','name'=>'IQ Test');
-* $footerBarArray[]= array('link'=>'Category:Help/HowTo','name'=>'Need HowTo?','menu'=>'Help-Section');
-    * > _Note1: You only have to enter the name of the menu into the field 'menu'._
-    * > _Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test_
-    * > _Note3: As you see, the first occurrence of the menu name will create the menu at that position and appends all other links with the same menu name._
+* $footerBarArray[]= array('link'=>'Category:Help/HowTo','name'=>'Need HowTo?','menu'=>'Help-Section');  
+> * _Note1: You only have to enter the name of the menu into the field 'menu'._
+> * _Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test_
+> * _Note3: As you see, the first occurrence of the menu name will create the menu at that position and appends all other links with the same menu name._
 
 ### The Wiki FooterBar Page <a name="WikiPage"></a>  ###
 The only thing you have to do to use this method:
