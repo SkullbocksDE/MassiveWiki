@@ -4,22 +4,25 @@ MediaWiki :: Extension :: FooterBar
 Table of Content
 -----------
 * [Description](#Description)
-* [Meta Data](#Meta)
+    * [Meta Data](#Meta)
 * [Install Notes](#Install)
 * [Define Links](#Links)
-* [The Global Array](#footerBarArray)
-* [Define Links](#WikiPage)
+    * [The Global Array](#footerBarArray)
+    * [Define Links](#WikiPage)
 * [Options](#Options)
 * [Styling](#Styling)
 * [Internationalization](#Internationalization)
 * [History](#History)
-* [ToDo](#ToDo)
+    * [Bugs](#Bugs)
+	    * [Fixed Bugs](#Fixed)
+	    * [Open Bugs](#Open)
+    * [ToDo](#ToDo)
 
 Description <a name="Description"></a>
 -----------
 This code is an extension for MediaWiki ( >= v.1.2).
 
-FooterBar adds a bar with links at the bottom of each page.
+FooterBar adds a fixed bar with links at the bottom of each page.
 
 You can add links to the FooterBar via:
 * a global array (LocalSettings.php) = highly customizable
@@ -43,20 +46,16 @@ Define Links <a name="Links"></a>
 -----------
 You have three options to add links to the FooterBar.
 
-* 1: Add links via the global array **['$footerBarArray'](#footerBarArray)** in 'LocalSettings.php'
+1. Add links via the global array **['$footerBarArray'](#footerBarArray)** in 'LocalSettings.php'
+    * _This method gives you the chance to add links and to customize the links on your own via 'id', 'class', etc._
+2. Add links via the wiki page 'MediaWiki:FooterBar' (see option **['$footerBarPage'](#footerBarPage)**)
+    * _The second method gives you the chance to add links to the bar within the MediaWiki and without changing the LocalSettings.php anymore._
+    * _People like admins and sysops, all who have the right to change the content within the 'MediaWiki' namespace, can sipport the FooterBar._
+3. Let user add their own links via their wiki page 'User:Username/FooterBar' (see option **['$footerBarUser'](#footerBarUser)**)
+    * _This method gives you the power to allow users to add links on their own._
 
-> * This method gives you the chance to add links and to customize the links on your own via 'id', 'class', etc.
-
-* 2: Add links via the wiki page 'MediaWiki:FooterBar' (see option **['$footerBarPage'](#footerBarPage)**)
-
-> * The second method gives you the chance to add links to the bar within the MediaWiki and without changing the LocalSettings.php anymore.
-> * People like admins and sysops, all who have the right to change the content within the 'MediaWiki' namespace, can sipport the FooterBar.
-
-* 3: Let user add their own links via their wiki page 'User:Username/FooterBar' (see option **['$footerBarUser'](#footerBarUser)**)
-
-> * This method gives you the power to allow users to add links on their own.
-
-Remember: If you are not using the **['$footerBarConcat'](#footerBarConcat)**, the extension will show the first allowed and accessible content: user >> page >> global array
+Remember: If you are not using the **['$footerBarConcat'](#footerBarConcat)**, the extension will show the first allowed and accessible content:
+* User:Username/FooterBar >> MediaWiki:FooterBar >> global array
 
 ### The Global Array <a name="footerBarArray"></a> ###
 To append links to the FooterBar, use the following code in LocalSettings.php:
@@ -71,22 +70,19 @@ To set the title of the link, use 'title':
 
 To set an id for the link, use 'id':
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','id'=>'Help');
-
-> * Note1: FooterBar will always prepend "footerBarItem_" to the id!
-> * Note2: The above code will result in "footerBarItem_Help".
+    * _Note1: FooterBar will always prepend "footerBarItem_" to the id!_
+    * _Note2: The above code will result in "footerBarItem_Help"._
 
 To set a class for the link, use 'class':
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','class'=>'Help');
-
-> * Note1: FooterBar will always prepend "footerBarItem_" to the class!
-> * Note2: The above code will result in "footerBarItem_Help".
+    * _Note1: FooterBar will always prepend "footerBarItem_" to the class!_
+    * _Note2: The above code will result in "footerBarItem_Help"._
 
 To append a string at the end of a url, use 'target':
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','target'=>'/Subpage');
 * $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','target'=>'&action=edit');
 * $footerBarArray[]= array('link'=>'Category:Help/Subpage','name'=>'Help Me!','target'=>'&action=edit');
-
-> * Note: The parameter 'target' will not be checked by any script, except for the value 'self', see below.
+    * _Note: The parameter 'target' will not be checked by any script, except for the value 'self', see below._
 
 To append the current page title to the end of the url, use 'target'=>'self':
 * $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self');
@@ -167,6 +163,12 @@ To internationalize the extension for your language use the i18-file:
 
 History <a name="History"></a> 
 -----------
+Here you can see the history of the FooterBar development.
+
+### Bugs <a name="Bugs"></a>  ###
+Here you can see all bugs of the FooterBar extension.
+
+#### Fixed <a name="Fixed"></a>  ####
 * (fixed): Extension was called multiple times by the hook 'SkinAfterContent', 'ParseAfterTidy' and 'ParseBeforeTidy', where as 'AfterFinalPageOutput' has done bullshit at the end of the page. Now using 'OutputPageParserOutput'.
 * (fixed): Couldn't detect the global array.
 * (fixed): It wasn't possible to skin the FooterBar. Now using the new ResourceLoader for CSS and JS.
@@ -189,9 +191,9 @@ History <a name="History"></a>
 * (fixed): It wasn't possible to turn off the error messages and use them as some kind of debug. Now added value '$footerBarShowErrors'.
 * (fixed): It wasn't possible to change the hideShow behaviour. JS is now checking for className. CSS classes accessible via: '.footerBar.footerBarHide' and '.footerBarContent.footerBarContentHide'.
 * (fixed): FooterBar wasn't displayed on SpecialPages, EditForms and Login. Hooks rearranged! Now using to create the Bar 'ArticlePageDataAfter' and 'SpecialPageBeforeExecute' and to show 'SkinAfterContent'. It also fixed the bug, that the JS was declared inline
-* (fixed): The status of the bar wasn't saved during a session. Now using cookies via the jQuery#cookie. To check the cookie there is a new inline JS, but only to call a head function.
+* (fixed): The status of the bar wasn't saved during a session. Now using cookies via the jQuery.cookie. To check the cookie there is a new inline JS, but only to call a head function.
 * (fixed): It wasn't possible to create menus for the FooterBar. New field added 'menu'. The menu will be created at the position of the first match of a certain menuname.
-
+#### Open <a name="Open"></a>  ####
 * (open) : The 'self' link doesn't work proper, because of the getTitle-function.
 * (open) : If no value of '$footerBarConcat' fits, then the FooterBar is empty.
 * (open) : New function of menu creation needs much better CSS.
@@ -200,7 +202,7 @@ History <a name="History"></a>
 * (open) : Get rid of the global value that stores the HTML of the FooterBar.
 * (open) : Restructure the JS functions.
  
-ToDo <a name="ToDo"></a> 
+### ToDo <a name="ToDo"></a>###
 -----------
 * Create a more readable source code with code reduction by using loops.
 * Test the FooterBar on other browsers.
