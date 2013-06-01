@@ -20,12 +20,12 @@ Table of Content
 
 Description <a name="Description"></a>
 -----------
-This code is an extension for MediaWiki ( >= v.1.2).
+This code is an extension for MediaWiki (v.1.2).
 
 FooterBar adds a fixed bar with links at the bottom of each page.
 
 You can add links to the FooterBar via:
-* a global array (LocalSettings.php) = highly customizable
+* an internal array (LocalSettings.php) = highly customizable
 * a wiki page (MediaWiki:FooterBar) = accessible for admins, sysops within the wiki
 * a user page (User:Username/FooterBar) = accessible for all users (not IP) within the wiki
 
@@ -33,7 +33,7 @@ It's possible to do much more personalization (read further).
 
 ### Meta Data  <a name="Meta"></a> ###
 * Author: Mike Knappe
-* Version: 0.4
+* Version: 0.8
 * Copyright: © 2013 Mike Knappe
 * License: GNU General Public Licence 2.0 or later
 
@@ -46,7 +46,7 @@ Define Links <a name="Links"></a>
 -----------
 You have three options to add links to the FooterBar.
 
-1. Add links via the global array **['$footerBarArray'](#footerBarArray)** in 'LocalSettings.php'
+1. Add links via the internal array **['$footerBarClass->setContent( array )'](#footerBarArray)** in 'LocalSettings.php'
     * _This method gives you the chance to add links and to customize the links on your own via 'id', 'class', etc._
 2. Add links via the wiki page 'MediaWiki:FooterBar' (see option **['$footerBarPage'](#footerBarPage)**)
     * _The second method gives you the chance to add links to the bar within the MediaWiki and without changing the LocalSettings.php anymore._
@@ -59,45 +59,44 @@ User:Username/FooterBar >> MediaWiki:FooterBar >> global array
 
 ### The Global Array <a name="footerBarArray"></a> ###
 To append links to the FooterBar, use the following code in LocalSettings.php:
-* $footerBarArray[]= array('link'=>'Help');
-* $footerBarArray[]= array('link'=>'Category:Help');
+* $footerBarClass->appendLink( array('link'=>'Category:Help') );
 
 To set an own name for the link, use 'name':
-* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!');
+* $footerBarClass->appendLink( array('link'=>'Category:Help','name'=>'Help Me!') );
 
 To set the title of the link, use 'title':
-* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','title'=>'This link will show you the Help category.');
+* $footerBarClass->appendLink( array('link'=>'Category:Help','name'=>'Help Me!','title'=>'This link will show you the Help category.') );
 
 To set an id for the link, use 'id':
-* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','id'=>'Help');
+* $footerBarClass->appendLink( array('link'=>'Category:Help','name'=>'Help Me!','id'=>'Help') );
     * _Note1: FooterBar will always prepend "footerBarItem_" to the id!_
     * _Note2: The above code will result in "footerBarItem_Help"._
 
 To set a class for the link, use 'class':
-* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','class'=>'Help');
+* $footerBarClass->appendLink( array('link'=>'Category:Help','name'=>'Help Me!','class'=>'Help') );
     * _Note1: FooterBar will always prepend "footerBarItem_" to the class!_
     * _Note2: The above code will result in "footerBarItem_Help"._
 
 To append a string at the end of a url, use 'target':
-* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','target'=>'/Subpage');
-* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','target'=>'&action=edit');
-* $footerBarArray[]= array('link'=>'Category:Help/Subpage','name'=>'Help Me!','target'=>'&action=edit');
+* $footerBarClass->appendLink( array('link'=>'Category:Help','name'=>'Help Me!','target'=>'/Subpage') );
+* $footerBarClass->appendLink( array('link'=>'Category:Help','name'=>'Help Me!','target'=>'&action=edit') );
+* $footerBarClass->appendLink( array('link'=>'Category:Help/Subpage','name'=>'Help Me!','target'=>'&action=edit') );
     * _Note: The parameter 'target' will not be checked by any script, except for the value 'self', see below._
 
 To append the current page title to the end of the url, use 'target'=>'self':
-* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self');
+* $footerBarClass->appendLink( array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self') );
     * _Note: The above code will result in "Special:WhatLinksHere/CurrentPage"._
 
 To set group rights to a link, use 'groups':
-* $footerBarArray[]= array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self','groups'=>array('admin'));
+* $footerBarClass->appendLink( array('link'=>'Special:WhatLinksHere','name'=>'WhatLinksHere','target'=>'self','groups'=>array('admin')) );
     * _Note1: Make sure, that you have declared an array of strings! 'groups'=>'admin' will not work!_
     * _Note2: There are as default groups "user", "bot", "bureaucrat", "admin", "sysop"_
 
 To create a menu of links, use 'menu':
-* $footerBarArray[]= array('link'=>'PI_Test','name'=>'PI Test');
-* $footerBarArray[]= array('link'=>'Category:Help','name'=>'Help Me!','menu'=>'Help-Section');
-* $footerBarArray[]= array('link'=>'IQ_Test','name'=>'IQ Test');
-* $footerBarArray[]= array('link'=>'Category:Help/HowTo','name'=>'Need HowTo?','menu'=>'Help-Section');
+* $footerBarClass->appendLink( array('link'=>'PI_Test','name'=>'PI Test') );
+* $footerBarClass->appendLink( array('link'=>'Category:Help','name'=>'Help Me!','menu'=>'Help-Section') );
+* $footerBarClass->appendLink( array('link'=>'IQ_Test','name'=>'IQ Test') );
+* $footerBarClass->appendLink( array('link'=>'Category:Help/HowTo','name'=>'Need HowTo?','menu'=>'Help-Section') );
     * _Note1: You only have to enter the name of the menu into the field 'menu'._
     * _Note2: The above example would result in: PI Test | Help-Section >> ( Help Me! | Need HowTo? ) | IQ Test_
     * _Note3: As you see, the first occurrence of the menu name will create the menu at that position and appends all other links with the same menu name._
@@ -110,31 +109,34 @@ The only thing you have to do to use this method:
 
 Options <a name="Options"></a> 
 -----------
-To turn off the hide-function, use '$footerBarHideable':
-* $footerBarHideable = false;
+To turn off the hide-function, use 'setHideAble( bool )':
+* $footerBarClass->setHideAble( false );
 
-To edit the content of the FooterBar within the MediaWiki, use '$footerBarPage': <a name="footerBarPage"></a>
-* $footerBarPage = true;
+To edit the content of the FooterBar within the MediaWiki, use 'setPage( bool )': <a name="footerBarPage"></a>
+* $footerBarClass->setPage( true );
     * _Note1: You have to create the page 'MediaWiki:FooterBar' with links to use this function._
     * _Note2: All the 'global array' links will be ignored, if the MediaWiki FooterBar page exists and the value is true._
     * _Note3: To prevent the behaviour of Note2 see the option **['$footerBarConcat'](#footerBarConcat)**._
 
-To allow users to customize the FooterBar within the MediaWiki, use '$footerBarUser': <a name="footerBarUser"></a>
-* $footerBarUser = true;
+To allow users to customize the FooterBar within the MediaWiki, use 'setUser( bool )': <a name="footerBarUser"></a>
+* $footerBarClass->setUser( true );
     * _Note1: A user can create the page 'User:Username/FooterBar' with links to use this function._
     * _Note2: All the 'global array' and the 'MediaWiki:FooterBar' links will be ignored, if the user created FooterBar page exists and the value is true._
     * _Note3: To prevent the behaviour of Note2 see the option **['$footerBarConcat'](#footerBarConcat)**._
 
-To concatenate the certain areas like 'MediaWiki:FooterBar', the global array and 'User:Username/FooterBar', use '$footerBarConcat': <a name="footerBarConcat"></a>
-* $footerBarConcat = array('array','page','user');
+To concatenate the certain areas like 'MediaWiki:FooterBar', the global array and 'User:Username/FooterBar', use 'setConcat( array[] )': <a name="footerBarConcat"></a>
+* $footerBarClass->setConcat( array('array','page','user') );
     * _Note1: Possible values: 'array', 'page', 'user'_
     * _Note2: The order of the entries in this array effects the concatenate order of the areas._
     * _Note3: If the array is empty, the following areas will be checked for content (depending on the options) in this order: user >> page >> array_
 
-To debug the **['global array'](#footerBarArray)** of the FooterBar (maybe you are missing a link), use '$footerBarShowErrors':
-* $footerBarShowErrors = true;
+To debug the **['global array'](#footerBarArray)** of the FooterBar (maybe you are missing a link), use 'setShowErrors( bool )':
+* $footerBarClass->setShowErrors( true );
     * _Note1: Default value is 'false'._
     * _Note2: FooterBar will auto. drop items/links, which are not declared in the right way like an array instead of a string._
+	
+To show a help button for all users which links to 'Special:FooterBar', use setShowHelp( bool ).
+* $footerBarClass->setShowHelp( true );
  
 Styling <a name="Styling"></a>
 -----------
